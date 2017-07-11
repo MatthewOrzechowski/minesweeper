@@ -137,35 +137,37 @@ def getMoveInputs():
                 print('Incorrect value entered: Values must be positive integers, and move must be "dig" or "flag"')
                 getMoveInputs()
 
-
-[x, y, numMines] = getBoardInputs()
-correctType = isinstance(x, int) and isinstance(y, int) and isinstance(numMines, int)
-correctValues = (x > 0 and y > 0 and numMines > 0 and numMines < x * y)
-while not correctType or not correctValues:
-	print("Incorrect value entered: All values must be positive integers, and the bombs must fit the board")
+def play():
 	[x, y, numMines] = getBoardInputs()
 	correctType = isinstance(x, int) and isinstance(y, int) and isinstance(numMines, int)
-	correctValues = (x > 0 and y > 0 and numMines > 0 and numMines < x * y)	
+	correctValues = (x > 0 and y > 0 and numMines > 0 and numMines < x * y)
+	while not correctType or not correctValues:
+		print("Incorrect value entered: All values must be positive integers, and the bombs must fit the board")
+		[x, y, numMines] = getBoardInputs()
+		correctType = isinstance(x, int) and isinstance(y, int) and isinstance(numMines, int)
+		correctValues = (x > 0 and y > 0 and numMines > 0 and numMines < x * y)	
 
-clearConsole()
-print("WELCOME TO MINESWEEPER") 
-print("NOTE THAT ALL COORDINATES, TO SERVE THE UNENLIGHTENED PUBLIC, ARE 1 INDEXED.")
-print("THIS MEANS 1, 1 IS THE TOP LEFT CORNER")
-print("\n"*2)
-
-game = Board(x, y, numMines)
-game.show(game.board)
-
-while not game.gameOver:
-	[xCoor, yCoor, moveType] = getMoveInputs()
-	while not (isinstance(xCoor, int) and isinstance(yCoor, int) and isinstance(moveType, str) and xCoor > 0 and xCoor <= x and yCoor > 0 and yCoor <= y and (moveType == "dig" or moveType == "flag")):
-		print('Incorrect value entered: Values must be positive integers within the dimensions of the board, and move must be "dig" or "flag"')
-		[xCoor, yCoor, moveType] = getMoveInputs()
 	clearConsole()
-	game.makeMove(xCoor, yCoor, moveType)
+	print("WELCOME TO MINESWEEPER") 
+	print("NOTE THAT ALL COORDINATES, TO SERVE THE UNENLIGHTENED PUBLIC, ARE 1 INDEXED.")
+	print("THIS MEANS 1, 1 IS THE TOP LEFT CORNER")
+	print("\n"*2)
+
+	game = Board(x, y, numMines)
 	game.show(game.board)
 
-if game.win:
-	print("You win! Congratulations!")
-else:
-	print("Boom! Try again next time!")
+	while not game.gameOver:
+		[xCoor, yCoor, moveType] = getMoveInputs()
+		while not (isinstance(xCoor, int) and isinstance(yCoor, int) and isinstance(moveType, str) and xCoor > 0 and xCoor <= x and yCoor > 0 and yCoor <= y and (moveType == "dig" or moveType == "flag")):
+			print('Incorrect value entered: Values must be positive integers within the dimensions of the board, and move must be "dig" or "flag"')
+			[xCoor, yCoor, moveType] = getMoveInputs()
+		clearConsole()
+		game.makeMove(xCoor, yCoor, moveType)
+		game.show(game.board)
+
+	if game.win:
+		print("You win! Congratulations!")
+	else:
+		print("Boom! Try again next time!")
+
+play()
